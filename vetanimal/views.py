@@ -3,8 +3,8 @@ from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status
 
-from .models import Category, Animal, Appointment
-from .serializers import CategoryListSerializer, AnimalListSerializer, AppointmentListSerializer
+from .models import Category, Animal, Record
+from .serializers import CategoryListSerializer, AnimalListSerializer, RecordListSerializer
 
 class IndexPageAPIView(APIView):
 
@@ -31,12 +31,12 @@ class IndexPageAPIView(APIView):
                 "search_results": animals_data  # результаты поиска
         })
 
-class AppointmentCreateView(APIView):
+class RecordCreateView(APIView):
     """
     POST /api/appointment/create/ → создать запись к ветеринару
     """
     def post(self, request):
-        serializer = AppointmentListSerializer(data=request.data)
+        serializer = RecordListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(
@@ -46,4 +46,9 @@ class AppointmentCreateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class RecordListView(APIView):
 
+    def get(self, request):
+        appointments = Record.objects.all().order_by("-date", "-time")
+        serializer = RecordListSerializer(appointments, many=True)
+        return Response(serializer.data)

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import  Category, Animal, Service, Appointment
+from .models import  Category, Animal, Service, Record
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
@@ -21,13 +21,13 @@ class ServiceListSerializer(serializers.ModelSerializer):
         model = Service
         fields = ["id", "title", "description", "price", "category"]
 
-class AppointmentListSerializer(serializers.ModelSerializer):
+class RecordListSerializer(serializers.ModelSerializer): #этo для создания записи
 
     animal = serializers.PrimaryKeyRelatedField(queryset=Animal.objects.all())
     # передается айди животного
 
     class Meta:
-        model = Appointment
+        model = Record
         fields = ["id", "owner_name", "owner_phone", "animal", "date", "time", "reason", "created_at"]
         read_only_fields = ["created_at"]
 

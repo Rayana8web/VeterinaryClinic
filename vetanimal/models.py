@@ -26,10 +26,10 @@ class Service(models.Model):
     def __str__(self):
         return f"{self.title} ({self.category.name})"
 
-class Appointment(models.Model):
+class Record(models.Model):
     owner_name = models.CharField(max_length=100)  # имя владельца
     owner_phone = models.CharField(max_length=20)  # телефон владельца
-    animal = models.ForeignKey("Animal", on_delete=models.CASCADE, related_name="appointments")
+    animal = models.ForeignKey("Animal", on_delete=models.CASCADE, related_name="records")
     date = models.DateField()  # день приёма
     time = models.TimeField()  # время приёма
     reason = models.TextField(blank=True, null=True)  # причина визита / жалобы
