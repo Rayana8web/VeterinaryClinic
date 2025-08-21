@@ -1,34 +1,49 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Animal, Service,  Category
-from .serializers import AnimalListSerializer, ServiceListSerializer,   CategoryListSerializer
+from django.db.models import Q
+from rest_framework import status
+
+from .models import Category, Animal, Appointment
+from .serializers import CategoryListSerializer, AnimalListSerializer, AppointmentListSerializer
 
 class IndexPageAPIView(APIView):
 
     def get(self, request):
-
-        # категории животных
+            # 1. выводит существующии категории
         categories = Category.objects.all()
-        categories_serializer = CategoryListSerializer(categories, many=True)
+        categories_data = CategoryListSerializer(categories, many=True).data
 
-        #  последние добавленные животные
-        latest_animals = Animal.objects.order_by('-id')[:6]  #  последних животных
-        animals_serializer = AnimalListSerializer(latest_animals, many=True)
+            # 2. Проверка поиска
+        search_query = request.GET.get("q")  # ?q=Барсик
 
-        #  услуги
-        services = Service.objects.all()[:6]  # 6 популярных услуг
-        services_serializer = ServiceListSerializer(services, many=True)
+        if search_query:
+                # 3. Если есть поиск, ищем по имени животного
+            animals = Animal.objects.filter(
+                    Q(name__icontains=search_query)  # ищем по имени
+                )
+            animals_data = AnimalListSerializer(animals, many=True).data
+        else:
+            animals_data = []  # если поиска нет, список пустой
+
+            # 4. ответ JSON
+        return Response({
+                "categories": categories_data,  # категории на главной
+                "search_results": animals_data  # результаты поиска
+        })
+
+class AppointmentCreateView(APIView):
+    """
+    POST /api/appointment/create/ → создать запись к ветеринару
+    """
+    def post(self, request):
+        serializer = AppointmentListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "Запись успешно создана!", "appointment": serializer.data},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-
-        # Собираем все данные в один JSON
-        data = {
-
-            'categories': categories_serializer.data,
-            'latest_animals': animals_serializer.data,
-            'services': services_serializer.data,
-
-        }
-
-        return Response(data)
 

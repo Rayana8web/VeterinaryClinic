@@ -11,7 +11,6 @@ class Category(models.Model):
 class Animal(models.Model):
     name = models.CharField(max_length=100)
     age = models.PositiveIntegerField()
-    photo = models.ImageField(upload_to="animals/")
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="animals")
 
     def __str__(self):
@@ -27,16 +26,19 @@ class Service(models.Model):
     def __str__(self):
         return f"{self.title} ({self.category.name})"
 
+class Appointment(models.Model):
+    owner_name = models.CharField(max_length=100)  # имя владельца
+    owner_phone = models.CharField(max_length=20)  # телефон владельца
+    animal = models.ForeignKey("Animal", on_delete=models.CASCADE, related_name="appointments")
+    date = models.DateField()  # день приёма
+    time = models.TimeField()  # время приёма
+    reason = models.TextField(blank=True, null=True)  # причина визита / жалобы
 
-class Product(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    photo = models.ImageField(upload_to="products/")
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
+    created_at = models.DateTimeField(auto_now_add=True)  # когда запись создана
 
     def __str__(self):
-        return self.title
+        return f"Запись {self.owner_name} ({self.animal.name}) на {self.date} {self.time}"
+
 
 
 
