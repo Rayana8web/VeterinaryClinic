@@ -5,6 +5,11 @@ from rest_framework import status
 
 from .models import Category, Animal, Record
 from .serializers import CategoryListSerializer, AnimalListSerializer, RecordListSerializer
+from django.shortcuts import get_object_or_404
+
+
+
+
 
 class IndexPageAPIView(APIView):
 
@@ -52,3 +57,32 @@ class RecordListView(APIView):
         appointments = Record.objects.all().order_by("-date", "-time")
         serializer = RecordListSerializer(appointments, many=True)
         return Response(serializer.data)
+
+#Канайым
+
+# список услуг для каждой категории
+CATEGORY_SPECIFIC_SERVICES = {
+    "кошка": ["Чистка зубов", "Записаться на терапию", "Купить лекарства", "Записаться на вакцинацию"],
+    "собака": ["Чистка зубов", "Записаться на терапию", "Купить лекарства", "Записаться на вакцинацию"],
+}
+
+class CategoryDetailAPIView(APIView):
+
+    def get(self, request, category_id):
+        category = get_object_or_404(Category, id=category_id)
+
+        service_titles = CATEGORY_SPECIFIC_SERVICES.get(category.name, [])
+
+        services = [
+            {"title": title, "description": "", "price": 0}
+            for title in service_titles
+        ]
+
+        data = {
+            "id": category_id,
+            "name": category.name,
+            "photo": category.photo.url if category.photo else "",
+            "services": services
+        }
+
+        return Response(data)

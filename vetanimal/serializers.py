@@ -31,3 +31,16 @@ class RecordListSerializer(serializers.ModelSerializer): #этo для созд�
         fields = ["id", "owner_name", "owner_phone", "animal", "date", "time", "reason", "created_at"]
         read_only_fields = ["created_at"]
 
+#Канайым
+# для услуги
+class ServiceDetailSerializer(serializers.Serializer):
+    title = serializers.CharField()
+    description = serializers.CharField()
+    price = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+# для категории
+class CategoryDetailSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+    name = serializers.CharField()
+    photo = serializers.ImageField()
+    services = ServiceDetailSerializer(many=True)
