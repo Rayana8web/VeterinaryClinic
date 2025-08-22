@@ -6,9 +6,9 @@ export interface LoginData {
 }
 
 export interface RegisterData {
+    username: string;
     email: string;
     password: string;
-    username: string;
     password_confirm: string;
 }
 
@@ -25,13 +25,13 @@ export interface AuthResponse {
 export const authAPI = {
     // Вход пользователя
     login: async (loginData: LoginData): Promise<AuthResponse> => {
-        const response = await apiClient.post('/auth/login/', loginData);
+        const response = await apiClient.post('/api/auth/login/', loginData);
         return response.data;
     },
 
     // Регистрация пользователя
     register: async (registerData: RegisterData): Promise<AuthResponse> => {
-        const response = await apiClient.post('/auth/register/', registerData);
+        const response = await apiClient.post('/api/auth/register/', registerData);
         return response.data;
     },
 

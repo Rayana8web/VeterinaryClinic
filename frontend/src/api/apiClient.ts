@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-// Временное решение - потом замените на process.env
-const API_BASE_URL = 'http://localhost:8000/api';
+// Базовый URL от бэкенда - БЕЗ /api в конце!
+const API_BASE_URL = 'https://web08hg.pythonanywhere.com';
 
 export const apiClient = axios.create({
     baseURL: API_BASE_URL,
@@ -10,6 +10,7 @@ export const apiClient = axios.create({
     },
 });
 
+// Перехватчик для добавления токена
 apiClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('authToken');
@@ -23,6 +24,7 @@ apiClient.interceptors.request.use(
     }
 );
 
+// Перехватчик для обработки ошибок
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
