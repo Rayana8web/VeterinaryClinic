@@ -9,7 +9,7 @@ from django.shortcuts import get_object_or_404
 from .filters import AppointmentFilter
 from .models import Category, Service
 from rest_framework.pagination import PageNumberPagination
-
+from drf_yasg.utils import swagger_auto_schema
 
 
 
@@ -28,6 +28,7 @@ class AppointmentPagination(PageNumberPagination):
     max_page_size = 50
 
 class IndexPageAPIView(APIView):
+
     def get(self, request):
         # ------------------- 1. Категории -------------------
         categories = Category.objects.all()
@@ -69,7 +70,7 @@ class AppointmentListView(APIView):
 
 # список услуг для каждой категории
 class CategoryDetailAPIView(APIView):
-
+    @swagger_auto_schema(responses={200: CategoryListSerializer()})
     def get(self, request, category_name):
         category = get_object_or_404(Category, name__iexact=category_name)
 
