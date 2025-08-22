@@ -44,7 +44,7 @@ const Header: React.FC = () => {
                         Главная
                     </Button>
 
-                    // Добавьте в навигацию
+
                     <Button
                         color="inherit"
                         component={RouterLink}

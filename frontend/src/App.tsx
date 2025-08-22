@@ -10,6 +10,9 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { CreateRecordPage } from './pages/CreateRecordPage';
 import { MyRecordsPage } from './pages/MyRecordsPage';
+import { PricesPage } from './pages/PricesPage';
+import { DoctorsPage } from './pages/DoctorsPage';
+import { ContactsPage } from './pages/ContactsPage';
 
 function App() {
     return (
@@ -30,11 +33,14 @@ function App() {
                                 px: { xs: 2, sm: 3, md: 4 }
                             }}>
                                 <Routes>
-                                    <Route path="/my-records" element={<MyRecordsPage />} />
-                                    <Route path="/create-record" element={<CreateRecordPage />} />
                                     <Route path="/" element={<HomePage />} />
                                     <Route path="/login" element={<LoginPage />} />
                                     <Route path="/register" element={<RegisterPage />} />
+                                    <Route path="/create-record" element={<CreateRecordPage />} />
+                                    <Route path="/my-records" element={<MyRecordsPage />} />
+                                    <Route path="/prices" element={<PricesPage />} />
+                                    <Route path="/doctors" element={<DoctorsPage />} />
+                                    <Route path="/contacts" element={<ContactsPage />} />
                                 </Routes>
                             </Box>
                         </Box>

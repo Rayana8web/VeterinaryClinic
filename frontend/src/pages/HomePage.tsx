@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
     Typography,
@@ -6,7 +7,7 @@ import {
     Card,
     CardContent,
     Button,
-    IconButton // Добавим иконку стрелки
+    IconButton
 } from '@mui/material';
 import { MedicalServices, People, ContactPhone, ArrowForward } from '@mui/icons-material';
 
@@ -71,7 +72,7 @@ export const HomePage: React.FC = () => {
 
             {/* Cards section */}
             <Grid container spacing={4}>
-                {/* КАРТОЧКА УСЛУГ - ТЕПЕРЬ КЛИКАБЕЛЬНАЯ */}
+                {/* Карточка Услуги */}
                 <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <Card
                         sx={{
@@ -82,14 +83,14 @@ export const HomePage: React.FC = () => {
                             flexDirection: 'column',
                             alignItems: 'center',
                             transition: 'transform 0.2s, box-shadow 0.2s',
-                            cursor: 'pointer', // Меняем курсор
+                            cursor: 'pointer',
                             '&:hover': {
                                 transform: 'translateY(-4px)',
                                 boxShadow: 6,
-                                backgroundColor: 'action.hover' // Легкий эффект при наведении
+                                backgroundColor: 'action.hover'
                             }
                         }}
-                        onClick={() => navigate('/prices')} // Навигация при клике
+                        onClick={() => navigate('/prices')}
                     >
                         <MedicalServices sx={{
                             fontSize: 60,
@@ -103,12 +104,11 @@ export const HomePage: React.FC = () => {
                             <Typography variant="body1" color="text.secondary" paragraph>
                                 Диагностика, лечение, вакцинация и профилактика заболеваний для ваших питомцев.
                             </Typography>
-                            {/* Добавляем иконку стрелки */}
                             <IconButton
                                 color="primary"
                                 sx={{ mt: 1 }}
                                 onClick={(e) => {
-                                    e.stopPropagation(); // Чтобы не срабатывал клик по карточке
+                                    e.stopPropagation();
                                     navigate('/prices');
                                 }}
                             >
@@ -118,7 +118,7 @@ export const HomePage: React.FC = () => {
                     </Card>
                 </Grid>
 
-                {/* Остальные карточки без изменений */}
+                {/* Карточка Врачи */}
                 <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <Card
                         sx={{
@@ -129,11 +129,14 @@ export const HomePage: React.FC = () => {
                             flexDirection: 'column',
                             alignItems: 'center',
                             transition: 'transform 0.2s, box-shadow 0.2s',
+                            cursor: 'pointer',
                             '&:hover': {
                                 transform: 'translateY(-4px)',
-                                boxShadow: 6
+                                boxShadow: 6,
+                                backgroundColor: 'action.hover'
                             }
                         }}
+                        onClick={() => navigate('/doctors')}
                     >
                         <People sx={{
                             fontSize: 60,
@@ -144,13 +147,24 @@ export const HomePage: React.FC = () => {
                             <Typography variant="h5" gutterBottom fontWeight={600}>
                                 Наши врачи
                             </Typography>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography variant="body1" color="text.secondary" paragraph>
                                 Опытные специалисты, которые любят животных и своё дело.
                             </Typography>
+                            <IconButton
+                                color="primary"
+                                sx={{ mt: 1 }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate('/doctors');
+                                }}
+                            >
+                                <ArrowForward />
+                            </IconButton>
                         </CardContent>
                     </Card>
                 </Grid>
 
+                {/* Карточка Контакты */}
                 <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                     <Card
                         sx={{
@@ -161,11 +175,14 @@ export const HomePage: React.FC = () => {
                             flexDirection: 'column',
                             alignItems: 'center',
                             transition: 'transform 0.2s, box-shadow 0.2s',
+                            cursor: 'pointer',
                             '&:hover': {
                                 transform: 'translateY(-4px)',
-                                boxShadow: 6
+                                boxShadow: 6,
+                                backgroundColor: 'action.hover'
                             }
                         }}
+                        onClick={() => navigate('/contacts')}
                     >
                         <ContactPhone sx={{
                             fontSize: 60,
@@ -176,9 +193,19 @@ export const HomePage: React.FC = () => {
                             <Typography variant="h5" gutterBottom fontWeight={600}>
                                 Контакты
                             </Typography>
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography variant="body1" color="text.secondary" paragraph>
                                 Найдите нас по адресу или свяжитесь по телефону/почте для записи.
                             </Typography>
+                            <IconButton
+                                color="primary"
+                                sx={{ mt: 1 }}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    navigate('/contacts');
+                                }}
+                            >
+                                <ArrowForward />
+                            </IconButton>
                         </CardContent>
                     </Card>
                 </Grid>

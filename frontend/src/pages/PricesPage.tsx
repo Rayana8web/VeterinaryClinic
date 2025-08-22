@@ -54,7 +54,7 @@ export const PricesPage: React.FC = () => {
                 {/* Заголовок */}
                 <Box textAlign="center" mb={4}>
                     <MedicalServices sx={{ fontSize: 60, color: 'primary.main', mb: 2 }} />
-                    // Замените заголовок
+
                     <Typography variant="h3" component="h1" gutterBottom>
                         Услуги и цены
                     </Typography>
