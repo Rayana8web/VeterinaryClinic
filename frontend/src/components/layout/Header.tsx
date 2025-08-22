@@ -44,6 +44,25 @@ const Header: React.FC = () => {
                         Главная
                     </Button>
 
+                    // Добавьте в навигацию
+                    <Button
+                        color="inherit"
+                        component={RouterLink}
+                        to="/create-record"
+                        sx={{ ml: 1 }}
+                    >
+                        📅 Запись
+                    </Button>
+
+                    <Button
+                        color="inherit"
+                        component={RouterLink}
+                        to="/my-records"
+                        sx={{ ml: 1 }}
+                    >
+                        📋 Мои записи
+                    </Button>
+
                     {user ? (
                         <>
                             <Button color="inherit">Профиль</Button>

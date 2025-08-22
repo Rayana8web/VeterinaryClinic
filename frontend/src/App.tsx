@@ -8,6 +8,8 @@ import { AuthProvider } from './contexts/AuthContext';
 import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
+import { CreateRecordPage } from './pages/CreateRecordPage';
+import { MyRecordsPage } from './pages/MyRecordsPage';
 
 function App() {
     return (
@@ -28,6 +30,8 @@ function App() {
                                 px: { xs: 2, sm: 3, md: 4 }
                             }}>
                                 <Routes>
+                                    <Route path="/my-records" element={<MyRecordsPage />} />
+                                    <Route path="/create-record" element={<CreateRecordPage />} />
                                     <Route path="/" element={<HomePage />} />
                                     <Route path="/login" element={<LoginPage />} />
                                     <Route path="/register" element={<RegisterPage />} />
