@@ -29,15 +29,14 @@ class Service(models.Model):
 class Record(models.Model):
     owner_name = models.CharField(max_length=100)  # имя владельца
     owner_phone = models.CharField(max_length=20)  # телефон владельца
-    animal = models.ForeignKey("Animal", on_delete=models.CASCADE, related_name="records")
+    category = models.ForeignKey("Category", on_delete=models.CASCADE, related_name="records")  # ✅ теперь на Category
     date = models.DateField()  # день приёма
     time = models.TimeField()  # время приёма
     reason = models.TextField(blank=True, null=True)  # причина визита / жалобы
-
     created_at = models.DateTimeField(auto_now_add=True)  # когда запись создана
 
     def __str__(self):
-        return f"Запись {self.owner_name} ({self.animal.name}) на {self.date} {self.time}"
+        return f"Запись {self.owner_name} ({self.category.name}) на {self.date} {self.time}"
 
 
 

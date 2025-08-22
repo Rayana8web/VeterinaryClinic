@@ -21,15 +21,18 @@ class ServiceListSerializer(serializers.ModelSerializer):
         model = Service
         fields = ["id", "title", "description", "price", "category"]
 
-class RecordListSerializer(serializers.ModelSerializer): #этo для создания записи
-
-    animal = serializers.PrimaryKeyRelatedField(queryset=Animal.objects.all())
-    # передается айди животного
+class RecordListSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(
+        slug_field="name",
+        queryset=Category.objects.all()
+    )
 
     class Meta:
         model = Record
-        fields = ["id", "owner_name", "owner_phone", "animal", "date", "time", "reason", "created_at"]
+        fields = ["id", "owner_name", "owner_phone", "category", "date", "time", "reason", "created_at"]
         read_only_fields = ["created_at"]
+
+
 
 #Канайым
 # для услуги
