@@ -1,10 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Q
-from rest_framework import status
+from rest_framework import status, generics
 
-from .models import Category, Animal, Record
-from .serializers import CategoryListSerializer, AnimalListSerializer, RecordListSerializer
+from .models import Category, Animal, Record, Appointment
+from .serializers import CategoryListSerializer, AnimalListSerializer, RecordListSerializer, AppointmentSerializer
 from django.shortcuts import get_object_or_404
 
 
@@ -86,3 +86,14 @@ class CategoryDetailAPIView(APIView):
         }
 
         return Response(data)
+
+
+# создание приёма
+class AppointmentCreateView(generics.CreateAPIView):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializer
+
+# список приёмов
+class AppointmentListView(generics.ListAPIView):
+    queryset = Appointment.objects.all()
+    serializer_class = AppointmentSerializer
