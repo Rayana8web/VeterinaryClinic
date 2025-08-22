@@ -3,14 +3,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status, generics
-
-from .models import Category, Animal, Appointment
+from .models import Category, Appointment
 from .serializers import CategoryListSerializer, AppointmentListSerializer
 from django.shortcuts import get_object_or_404
-from rest_framework.pagination import PageNumberPagination
 from .filters import AppointmentFilter
-
 from .models import Category, Service
+from rest_framework.pagination import PageNumberPagination
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -46,8 +54,8 @@ class IndexPageAPIView(APIView):
 
 
 
-class AppointmentCreateView(APIView):
-    permission_classes = [IsAdminUser]  # Только админ
+class AppointmentListView(APIView):
+    permission_classes = [IsAdminUser]  # ✅ Только админ
 
     def get(self, request):
         appointments = Appointment.objects.all().order_by("-date", "-time")

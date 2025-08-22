@@ -1,6 +1,7 @@
 from django.db import models
 
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
     photo = models.ImageField(upload_to="categories/")
@@ -49,5 +50,11 @@ class Appointment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
+
         return f"{self.full_name} - {self.service.title} ({self.category.name}) [{self.date} {self.time}]"
+
+
+
+
+
 
