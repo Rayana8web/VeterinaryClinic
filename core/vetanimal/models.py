@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -54,7 +54,13 @@ class Appointment(models.Model):
         return f"{self.full_name} - {self.service.title} ({self.category.name}) [{self.date} {self.time}]"
 
 
+class Review(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"{self.user} ({self.created_at.strftime('%Y-%m-%d %H:%M')})"
 
 
 

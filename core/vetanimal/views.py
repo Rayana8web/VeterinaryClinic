@@ -1,10 +1,14 @@
 from rest_framework.permissions import IsAdminUser
+
+from rest_framework.permissions import IsAuthenticated
+
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status, generics
-from .models import Category, Appointment
-from .serializers import CategoryListSerializer, AppointmentListSerializer
+from .models import Category, Appointment, Review
+from .serializers import CategoryListSerializer, AppointmentListSerializer, ReviewListSerializer
 from django.shortcuts import get_object_or_404
 from .filters import AppointmentFilter
 from .models import Category, Service
@@ -63,9 +67,22 @@ class AppointmentListView(APIView):
         serializer = AppointmentListSerializer(appointments, many=True)
         return Response(serializer.data)
 
+class ReviewCreateAPIView (APIView):
+    permission_classes = [IsAuthenticated]
 
 
+    def post(self, request):
+        serializer = ReviewListSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class ReviewPageAPIView(APIView):
+    def get(self, request):
+        reviews= Review.objects.all().order_by("-created_at")
+        serializer = ReviewListSerializer(reviews, many=True)
+        return Response(serializer.data)
 #Канайым
 
 # список услуг для каждой категории
