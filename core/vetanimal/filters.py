@@ -1,9 +1,9 @@
 from django_filters import rest_framework as filters
-from .models import Appointment
+from .models import Record
 
-class AppointmentFilter(filters.FilterSet):
+class RecordFilter(filters.FilterSet):
     category = filters.CharFilter(field_name="service__category__name", lookup_expr="icontains")
 
     class Meta:
-        model = Appointment
+        model = Record
         fields = ["category"]

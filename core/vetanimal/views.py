@@ -7,10 +7,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status, generics
-from .models import Category, Appointment, Review
-from .serializers import CategoryListSerializer, AppointmentListSerializer, ReviewListSerializer
+from .models import Category, Record, Review
+from .serializers import CategoryListSerializer, RecordListSerializer, ReviewListSerializer
 from django.shortcuts import get_object_or_404
-from .filters import AppointmentFilter
+from .filters import RecordFilter
 from .models import Category, Service
 from rest_framework.pagination import PageNumberPagination
 from drf_yasg.utils import swagger_auto_schema
@@ -26,7 +26,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 
 
-class AppointmentPagination(PageNumberPagination):
+class RecordPagination(PageNumberPagination):
     page_size = 5
     page_size_query_param = 'page_size'
     max_page_size = 50
@@ -39,32 +39,35 @@ class IndexPageAPIView(APIView):
         categories_data = CategoryListSerializer(categories, many=True).data
 
         # ------------------- 2. Фильтрация записей по категории -------------------
-        appointments = Appointment.objects.all().order_by("-created_at")
-        appointment_filter = AppointmentFilter(request.GET, queryset=appointments)
-        appointments = appointment_filter.qs
+        records = Record.objects.all().order_by("-created_at")
+        record_filter = RecordFilter(request.GET, queryset=records)
+        records = record_filter.qs
 
         # ------------------- 3. Пагинация -------------------
-        paginator = AppointmentPagination()
-        paginated_appointments = paginator.paginate_queryset(appointments, request)
-        # Сериализуем записи (AppointmentSerializer нужно настроить)
-        appointments_data = AppointmentListSerializer(paginated_appointments, many=True).data
+        paginator = RecordPagination()
+        paginated_records = paginator.paginate_queryset(records, request)
+        # Сериализуем записи (RecordSerializer нужно настроить)
+        records_data = RecordListSerializer(paginated_records, many=True).data
 
         # ------------------- 4. JSON ответ -------------------
         return paginator.get_paginated_response({
             "categories": categories_data,
-            "appointments": appointments_data
+            "records": records_data
         })
 
+# создание приёма
+class RecordCreateView(generics.CreateAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordListSerializer
 
 
 
-
-class AppointmentListView(APIView):
+class RecordListView(APIView):
     permission_classes = [IsAdminUser]  # ✅ Только админ
 
     def get(self, request):
-        appointments = Appointment.objects.all().order_by("-date", "-time")
-        serializer = AppointmentListSerializer(appointments, many=True)
+        appointments = Record.objects.all().order_by("-date", "-time")
+        serializer = RecordListSerializer(appointments, many=True)
         return Response(serializer.data)
 
 class ReviewCreateAPIView (APIView):
@@ -113,12 +116,9 @@ class CategoryDetailAPIView(APIView):
 
         return Response(data)
 
-# создание приёма
-class AppointmentCreateView(generics.CreateAPIView):
-    queryset = Appointment.objects.all()
-    serializer_class = AppointmentListSerializer
+
 
 # список приёмов
-class AppointmentListView(generics.ListAPIView):
-    queryset = Appointment.objects.all()
-    serializer_class = AppointmentListSerializer
+#class RecordListView(generics.ListAPIView):
+    #queryset = Record.objects.all()
+    #serializer_class = RecordListSerializer

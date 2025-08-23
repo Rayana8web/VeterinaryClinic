@@ -32,16 +32,16 @@ class Service(models.Model):
 
 
 
-class Appointment(models.Model):
+class Record(models.Model):
     service = models.ForeignKey(
         "Service",
         on_delete=models.CASCADE,
-        related_name="appointments"
+        related_name="records"
     )
     category = models.ForeignKey(   # 🐾 Вид животного
         "Category",
         on_delete=models.CASCADE,
-        related_name="appointments"
+        related_name="records"
     )
     full_name = models.CharField(max_length=255)  # ФИО владельца
     email = models.EmailField()

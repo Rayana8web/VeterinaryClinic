@@ -1,7 +1,7 @@
 from datetime import datetime
 
 from rest_framework import serializers
-from .models import Category, Animal, Service,  Appointment, Review
+from .models import Category, Animal, Service,  Record, Review
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
@@ -45,9 +45,9 @@ class CategoryDetailSerializer(serializers.Serializer):
 
 
 # для записи
-class AppointmentListSerializer(serializers.ModelSerializer):
+class RecordListSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Appointment
+        model = Record
         fields = "__all__"
 
     def validate(self, data):
@@ -57,9 +57,9 @@ class AppointmentListSerializer(serializers.ModelSerializer):
 
         selected_datetime = datetime.combine(date, time_selected)
 
-        appointments = Appointment.objects.filter(service=service, date=date)
+        records = Record.objects.filter(service=service, date=date)
 
-        for appt in appointments:
+        for appt in records:
             appt_datetime = datetime.combine(appt.date, appt.time)
             diff = abs((appt_datetime - selected_datetime).total_seconds())
             if diff < 3600:
