@@ -1,4 +1,4 @@
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import AllowAny
 
 from rest_framework.permissions import IsAuthenticated
 
@@ -55,19 +55,22 @@ class IndexPageAPIView(APIView):
             "records": records_data
         })
 
-# создание приёма
+
+
 class RecordCreateView(generics.CreateAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordListSerializer
 
 
 
+
+# Просмотр записей (GET) — доступно всем
 class RecordListView(APIView):
-    permission_classes = [IsAdminUser]  # ✅ Только админ
+    permission_classes = [AllowAny]  # Все могут видеть записи
 
     def get(self, request):
-        appointments = Record.objects.all().order_by("-date", "-time")
-        serializer = RecordListSerializer(appointments, many=True)
+        records = Record.objects.all().order_by("-date", "-time")
+        serializer = RecordListSerializer(records, many=True)
         return Response(serializer.data)
 
 class ReviewCreateAPIView (APIView):
