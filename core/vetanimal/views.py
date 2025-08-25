@@ -1,6 +1,6 @@
 from rest_framework.permissions import AllowAny
 
-from rest_framework.permissions import IsAuthenticated
+
 
 
 from rest_framework.views import APIView
@@ -74,7 +74,7 @@ class RecordListView(APIView):
         return Response(serializer.data)
 
 class ReviewCreateAPIView (APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
 
     def post(self, request):

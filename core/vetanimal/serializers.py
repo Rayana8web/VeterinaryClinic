@@ -46,6 +46,9 @@ class CategoryDetailSerializer(serializers.Serializer):
 
 # для записи
 class RecordListSerializer(serializers.ModelSerializer):
+    category = serializers.StringRelatedField()
+    service = serializers.StringRelatedField()
+
     class Meta:
         model = Record
         fields = "__all__"
