@@ -1,8 +1,5 @@
 from rest_framework.permissions import AllowAny
-
-
-
-
+from rest_framework.permissions import  IsAdminUser
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Q
@@ -14,13 +11,6 @@ from .filters import RecordFilter
 from .models import Category, Service
 from rest_framework.pagination import PageNumberPagination
 from drf_yasg.utils import swagger_auto_schema
-
-
-
-
-
-
-
 
 
 
@@ -64,18 +54,18 @@ class RecordCreateView(generics.CreateAPIView):
 
 
 
-# Просмотр записей (GET) — доступно всем
+# Просмотр записей (GET)
 class RecordListView(APIView):
-    permission_classes = [AllowAny]  # Все могут видеть записи
+    permission_classes = [IsAdminUser]
 
     def get(self, request):
         records = Record.objects.all().order_by("-date", "-time")
         serializer = RecordListSerializer(records, many=True)
         return Response(serializer.data)
 
+
 class ReviewCreateAPIView (APIView):
     permission_classes = [AllowAny]
-
 
     def post(self, request):
         serializer = ReviewListSerializer(data=request.data)
@@ -89,8 +79,10 @@ class ReviewPageAPIView(APIView):
         reviews= Review.objects.all().order_by("-created_at")
         serializer = ReviewListSerializer(reviews, many=True)
         return Response(serializer.data)
-#Канайым
 
+
+
+#Канайым
 # список услуг для каждой категории
 class CategoryDetailAPIView(APIView):
     @swagger_auto_schema(responses={200: CategoryListSerializer()})
