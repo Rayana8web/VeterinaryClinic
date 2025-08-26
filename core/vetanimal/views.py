@@ -1,18 +1,19 @@
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import  IsAdminUser
+from rest_framework.permissions import  IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status, generics
-from .models import Category, Record, Review
+from .models import Category, Record, Review, Doctor, Animal
 from .serializers import CategoryListSerializer, RecordListSerializer, ReviewListSerializer
 from django.shortcuts import get_object_or_404
 from .filters import RecordFilter
 from .models import Category, Service
 from rest_framework.pagination import PageNumberPagination
 from drf_yasg.utils import swagger_auto_schema
-
-
+from datetime import time, timedelta, datetime
+from django.contrib.auth.models import User
 
 
 
@@ -52,7 +53,23 @@ class RecordCreateView(generics.CreateAPIView):
     serializer_class = RecordListSerializer
 
 
+class MyRecordsView(APIView):
+    permission_classes = [IsAuthenticated]
 
+    def get(self, request):
+        # Используем 'user', а не 'owner'
+        records = Record.objects.filter(user=request.user).select_related("service", "category")
+        data = []
+        for r in records:
+            data.append({
+                "category": r.category.name,
+                "service": r.service.title,  # у тебя поле 'title', а не 'name'
+                "full_name": r.full_name,
+                "email": r.email,
+                "date": r.date,
+                "time": r.time
+            })
+        return Response(data)
 
 # Просмотр записей (GET)
 class RecordListView(APIView):
@@ -62,6 +79,8 @@ class RecordListView(APIView):
         records = Record.objects.all().order_by("-date", "-time")
         serializer = RecordListSerializer(records, many=True)
         return Response(serializer.data)
+
+
 
 
 class ReviewCreateAPIView (APIView):

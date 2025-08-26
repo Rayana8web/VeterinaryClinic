@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, time
 
 from rest_framework import serializers
 from .models import Category, Animal, Service,  Record, Review
@@ -46,8 +46,14 @@ class CategoryDetailSerializer(serializers.Serializer):
 
 # для записи
 class RecordListSerializer(serializers.ModelSerializer):
-    category = serializers.StringRelatedField()
-    service = serializers.StringRelatedField()
+    category = serializers.SlugRelatedField(
+        slug_field="name",  # или другое поле
+        queryset=Category.objects.all()
+    )
+    service = serializers.SlugRelatedField(
+        slug_field="name",  # или другое поле
+        queryset=Service.objects.all()
+    )
 
     class Meta:
         model = Record
@@ -58,20 +64,31 @@ class RecordListSerializer(serializers.ModelSerializer):
         date = data["date"]
         time_selected = data["time"]
 
+        # Ограничиваем рабочее время 08:00–18:00
+        if not (time(8, 0) <= time_selected <= time(18, 0)):
+            raise serializers.ValidationError(
+                {"time": "Запись возможна только с 08:00 до 18:00"}
+            )
+
         selected_datetime = datetime.combine(date, time_selected)
 
-        records = Record.objects.filter(service=service, date=date)
+        # Проверяем, есть ли запись в то же время
+        if Record.objects.filter(service=service, date=date, time=time_selected).exists():
+            raise serializers.ValidationError(
+                {"time": "Это время уже занято, выберите другое"}
+            )
 
+        # Проверяем интервал в 1 час
+        records = Record.objects.filter(service=service, date=date)
         for appt in records:
             appt_datetime = datetime.combine(appt.date, appt.time)
             diff = abs((appt_datetime - selected_datetime).total_seconds())
             if diff < 3600:
                 raise serializers.ValidationError(
-                    "Это время недоступно, интервал между записями 1 час"
+                    {"time": "Интервал между записями должен быть минимум 1 час"}
                 )
 
         return data
-
 
 class ReviewListSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)  # имя пользователя
