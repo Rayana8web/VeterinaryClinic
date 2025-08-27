@@ -40,14 +40,14 @@ class UserLogoutView(APIView):
         return Response({"message": "Вы успешно вышли!"}, status=status.HTTP_200_OK)
 
 
-User = get_user_model()
+MyUser = get_user_model()
 token_generator = PasswordResetTokenGenerator()
 
 class RequestPasswordReset(APIView):
     def post(self, request):
         email = request.data.get("email")
         try:
-            user = User.objects.get(email=email)
+            user = MyUser.objects.get(email=email)
         except User.DoesNotExist:
             return Response({"detail": "If that email exists, a reset link was sent."}, status=200)
 
@@ -68,7 +68,7 @@ class ResetPassword(APIView):
     def post(self, request, uidb64, token):
         try:
             uid = force_str(urlsafe_base64_decode(uidb64))
-            user = User.objects.get(pk=uid)
+            user = MyUser.objects.get(pk=uid)
         except (User.DoesNotExist, ValueError, TypeError, OverflowError):
             return Response({"detail": "Invalid link"}, status=400)
 
