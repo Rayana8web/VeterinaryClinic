@@ -3,8 +3,9 @@ from .models import MyUser
 from django.contrib.auth import authenticate
 
 
+
 class UserRegisterSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)  # пароль только на запись
+    password = serializers.CharField(write_only=True)
 
     class Meta:
         model = MyUser
@@ -15,9 +16,11 @@ class UserRegisterSerializer(serializers.ModelSerializer):
             email=validated_data['email'],
             username=validated_data['username'],
         )
-        user.set_password(validated_data['password'])  # хэшируем пароль
+        user.set_password(validated_data['password'])
         user.save()
         return user
+
+
 
 class UserLoginSerializer(serializers.Serializer):
     email = serializers.EmailField()

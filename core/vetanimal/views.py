@@ -29,7 +29,7 @@ class IndexPageAPIView(APIView):
         categories = Category.objects.all()
         categories_data = CategoryListSerializer(categories, many=True).data
 
-        # ------------------- 2. Фильтрация записей по категории -------------------
+        # ------------------- 2. Фильтрация  -------------------
         records = Record.objects.all().order_by("-created_at")
         record_filter = RecordFilter(request.GET, queryset=records)
         records = record_filter.qs
@@ -40,7 +40,7 @@ class IndexPageAPIView(APIView):
         # Сериализуем записи (RecordSerializer нужно настроить)
         records_data = RecordListSerializer(paginated_records, many=True).data
 
-        # ------------------- 4. JSON ответ -------------------
+        # ------------------- 4. JSON  -------------------
         return paginator.get_paginated_response({
             "categories": categories_data,
             "records": records_data
@@ -51,27 +51,37 @@ class IndexPageAPIView(APIView):
 class RecordCreateView(generics.CreateAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 
 
 class MyRecordsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        # Используем 'user', а не 'owner'
-        records = Record.objects.filter(user=request.user).select_related("service", "category")
+        records = Record.objects.filter(user=request.user).select_related(
+            "animal", "service", "doctor", "category"
+        )
         data = []
         for r in records:
             data.append({
-                "category": r.category.name,
-                "service": r.service.title,  # у тебя поле 'title', а не 'name'
                 "full_name": r.full_name,
                 "email": r.email,
+                "animal": r.animal.name,
+                "category": r.category.name,
+                "service": r.service.title,
+                "doctor": r.doctor.name,
                 "date": r.date,
-                "time": r.time
+                "time": r.time,
             })
         return Response(data)
 
-# Просмотр записей (GET)
+
+
+# Просмотр записей
 class RecordListView(APIView):
     permission_classes = [IsAdminUser]
 
@@ -79,7 +89,6 @@ class RecordListView(APIView):
         records = Record.objects.all().order_by("-date", "-time")
         serializer = RecordListSerializer(records, many=True)
         return Response(serializer.data)
-
 
 
 
@@ -93,6 +102,8 @@ class ReviewCreateAPIView (APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+
 class ReviewPageAPIView(APIView):
     def get(self, request):
         reviews= Review.objects.all().order_by("-created_at")
@@ -101,15 +112,11 @@ class ReviewPageAPIView(APIView):
 
 
 
-#Канайым
 # список услуг для каждой категории
 class CategoryDetailAPIView(APIView):
     @swagger_auto_schema(responses={200: CategoryListSerializer()})
     def get(self, request, category_name):
         category = get_object_or_404(Category, name__iexact=category_name)
-
-
-        # Берём все услуги, связанные с этой категорией из базы
         services_qs = Service.objects.filter(category=category)
 
         services = [
@@ -132,7 +139,4 @@ class CategoryDetailAPIView(APIView):
 
 
 
-# список приёмов
-#class RecordListView(generics.ListAPIView):
-    #queryset = Record.objects.all()
-    #serializer_class = RecordListSerializer
+

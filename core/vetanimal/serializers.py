@@ -1,7 +1,7 @@
 from datetime import datetime, time
-
 from rest_framework import serializers
 from .models import Category, Animal, Service,  Record, Review
+
 
 
 class CategoryListSerializer(serializers.ModelSerializer):
@@ -9,12 +9,16 @@ class CategoryListSerializer(serializers.ModelSerializer):
         model = Category
         fields = ["id", "name", "photo"]
 
+
+
 class AnimalListSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer(read_only=True)
 
     class Meta:
         model = Animal
         fields = ["id", "name", "age", "photo", "category"]
+
+
 
 class ServiceListSerializer(serializers.ModelSerializer):
     category = CategoryListSerializer(read_only=True)
@@ -25,15 +29,13 @@ class ServiceListSerializer(serializers.ModelSerializer):
 
 
 
-
-
-#Канайым
 # для услуги
 class ServiceDetailSerializer(serializers.Serializer):
     title = serializers.CharField()
     description = serializers.CharField()
     price = serializers.DecimalField(max_digits=10, decimal_places=2)
     photo = serializers.ImageField(required=False)
+
 
 
 # для категории
@@ -44,51 +46,35 @@ class CategoryDetailSerializer(serializers.Serializer):
     services = ServiceDetailSerializer(many=True)
 
 
+
 # для записи
 class RecordListSerializer(serializers.ModelSerializer):
-    category = serializers.SlugRelatedField(
-        slug_field="name",  # или другое поле
-        queryset=Category.objects.all()
-    )
-    service = serializers.SlugRelatedField(
-        slug_field="name",  # или другое поле
-        queryset=Service.objects.all()
-    )
-
     class Meta:
         model = Record
-        fields = "__all__"
+        fields = ['animal', 'doctor', 'service', 'category', 'full_name', 'email', 'date', 'time']
 
-    def validate(self, data):
-        service = data["service"]
-        date = data["date"]
-        time_selected = data["time"]
+    def validate(self, attrs):
+        # Проверка, что выбранное время свободно
+        doctor = attrs.get('doctor')
+        date = attrs.get('date')
+        time = attrs.get('time')
 
-        # Ограничиваем рабочее время 08:00–18:00
-        if not (time(8, 0) <= time_selected <= time(18, 0)):
-            raise serializers.ValidationError(
-                {"time": "Запись возможна только с 08:00 до 18:00"}
-            )
+        if Record.objects.filter(doctor=doctor, date=date, time=time).exists():
+            raise serializers.ValidationError("В это время доктор уже занят. Выберите другое время.")
 
-        selected_datetime = datetime.combine(date, time_selected)
+        # Проверка интервала с 8:00 до 18:00
+        if not (8 <= time.hour < 18):
+            raise serializers.ValidationError("Запись возможна только с 08:00 до 18:00.")
 
-        # Проверяем, есть ли запись в то же время
-        if Record.objects.filter(service=service, date=date, time=time_selected).exists():
-            raise serializers.ValidationError(
-                {"time": "Это время уже занято, выберите другое"}
-            )
+        # Проверка на часовой интервал между записями
+        existing_times = Record.objects.filter(doctor=doctor, date=date).values_list('time', flat=True)
+        for t in existing_times:
+            if abs((datetime.combine(date, t) - datetime.combine(date, time)).seconds) < 3600:
+                raise serializers.ValidationError("Интервал между записями должен быть не менее 1 часа.")
 
-        # Проверяем интервал в 1 час
-        records = Record.objects.filter(service=service, date=date)
-        for appt in records:
-            appt_datetime = datetime.combine(appt.date, appt.time)
-            diff = abs((appt_datetime - selected_datetime).total_seconds())
-            if diff < 3600:
-                raise serializers.ValidationError(
-                    {"time": "Интервал между записями должен быть минимум 1 час"}
-                )
+        return attrs
 
-        return data
+
 
 class ReviewListSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField(read_only=True)  # имя пользователя

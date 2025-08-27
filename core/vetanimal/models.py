@@ -6,14 +6,14 @@ from datetime import time
 
 
 
-
-
 class Category(models.Model):
     name = models.CharField(max_length=100)
     photo = models.ImageField(upload_to="categories/")
 
     def __str__(self):
         return self.name
+
+
 
 class Animal(models.Model):
     name = models.CharField(max_length=100)
@@ -22,6 +22,7 @@ class Animal(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.category.name})"
+
 
 
 class Service(models.Model):
@@ -36,6 +37,7 @@ class Service(models.Model):
         return f"{self.title} ({self.category.name})"
 
 
+
 class Doctor(models.Model):
     name = models.CharField(max_length=100)
     specialization = models.CharField(max_length=150, blank=True, null=True)
@@ -44,11 +46,22 @@ class Doctor(models.Model):
         return self.name
 
 
+
 User = get_user_model()
 
 class Record(models.Model):
     user = models.ForeignKey(
         User,
+        on_delete=models.CASCADE,
+        related_name="records"
+    )
+    animal = models.ForeignKey(
+        "Animal",
+        on_delete=models.CASCADE,
+        related_name="records"
+    )
+    doctor = models.ForeignKey(
+        "Doctor",
         on_delete=models.CASCADE,
         related_name="records"
     )
@@ -70,6 +83,8 @@ class Record(models.Model):
 
     def __str__(self):
         return f"{self.full_name} - {self.service.title} ({self.category.name}) [{self.date} {self.time}]"
+
+
 
 class Review(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
