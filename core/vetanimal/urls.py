@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import (IndexPageAPIView,  CategoryDetailAPIView, RecordListView,
-    RecordCreateView, ReviewCreateAPIView, ReviewPageAPIView,MyRecordsView)
+    RecordCreateView, ReviewCreateAPIView, ReviewPageAPIView,MyRecordsView, DoctorListAPIView)
 
 urlpatterns = [
     path('index/', IndexPageAPIView.as_view(),),
@@ -18,5 +18,10 @@ urlpatterns = [
     # отзыв
     path("reviews/", ReviewPageAPIView.as_view()),  # просмотр всех отзывов
     path("reviews/create/", ReviewCreateAPIView.as_view()),  # оставить отзыв
+
+
+
+    # врачи
+    path('doctors/', DoctorListAPIView.as_view(), ),
 ]
 

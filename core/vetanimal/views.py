@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status, generics
 from .models import Category, Record, Review, Doctor, Animal
-from .serializers import CategoryListSerializer, RecordListSerializer, ReviewListSerializer
+from .serializers import CategoryListSerializer, RecordListSerializer, ReviewListSerializer, DoctorSerializer
 from django.shortcuts import get_object_or_404
 from .filters import RecordFilter
 from .models import Category, Service
@@ -139,4 +139,17 @@ class CategoryDetailAPIView(APIView):
 
 
 
+class DoctorPagination(PageNumberPagination):
+
+    page_size = 10
+    page_size_query_param = "page_size"
+    max_page_size = 50
+
+
+
+class DoctorListAPIView(APIView):
+    def get(self, request):
+        doctors = Doctor.objects.all()
+        serializer = DoctorSerializer(doctors, many=True)
+        return Response(serializer.data)
 

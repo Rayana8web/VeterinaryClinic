@@ -1,6 +1,6 @@
 from datetime import datetime, time
 from rest_framework import serializers
-from .models import Category, Animal, Service,  Record, Review
+from .models import Category, Animal, Service,  Record, Review, Doctor
 
 
 
@@ -82,3 +82,11 @@ class ReviewListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ["id", "user", "text", "created_at"]
+
+
+
+class DoctorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Doctor
+        fields = ["id", "name", "specialization"]
