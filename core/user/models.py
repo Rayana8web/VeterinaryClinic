@@ -57,3 +57,9 @@ class MyUser(AbstractBaseUser):
         """Is the user a member of staff?"""
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+
+class OtpToken(models.Model):
+    user = models.ForeignKey(MyUser, on_delete=models.CASCADE)
+    code = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)

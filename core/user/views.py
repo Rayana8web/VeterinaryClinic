@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.conf import settings
+from .models import OtpToken
 
 class UserRegisterView(APIView):
     def post(self, request):
@@ -41,8 +42,7 @@ class UserLogoutView(APIView):
 
 
 MyUser = get_user_model()
-token_generator = PasswordResetTokenGenerator()
-
+from .services import generate_otp,is_code_valid
 class RequestPasswordReset(APIView):
     def post(self, request):
         email = request.data.get("email")
@@ -51,9 +51,11 @@ class RequestPasswordReset(APIView):
         except User.DoesNotExist:
             return Response({"detail": "If that email exists, a reset link was sent."}, status=200)
 
-        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
-        token = token_generator.make_token(user)
-        reset_link = f"http://localhost:3000/reset/{uidb64}/{token}/"  # frontend link
+        code = generate_otp()
+        otp=OtpToken(code=code, user=user)
+        user.otp=otp
+        user.save()
+        reset_link = f"http://localhost:3000/reset/{code}/"  # frontend link
 
         send_mail(
             "Password Reset",
@@ -65,14 +67,14 @@ class RequestPasswordReset(APIView):
 
 
 class ResetPassword(APIView):
-    def post(self, request, uidb64, token):
+    def post(self, request,code):
         try:
-            uid = force_str(urlsafe_base64_decode(uidb64))
-            user = MyUser.objects.get(pk=uid)
+            otp = OtpToken.objects.get(code=code)
+            user = otp.user
         except (User.DoesNotExist, ValueError, TypeError, OverflowError):
             return Response({"detail": "Invalid link"}, status=400)
 
-        if not token_generator.check_token(user, token):
+        if not is_code_valid(code):
             return Response({"detail": "Invalid or expired token"}, status=400)
 
         password = request.data.get("password")
