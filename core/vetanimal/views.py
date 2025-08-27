@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.db.models import Q
 from rest_framework import status, generics
 from .models import Category, Record, Review, Doctor, Animal
-from .serializers import CategoryListSerializer, RecordListSerializer, ReviewListSerializer, DoctorSerializer
+from .serializers import CategoryListSerializer, RecordListSerializer, ReviewListSerializer, DoctorSerializer, ServiceListSerializer
 from django.shortcuts import get_object_or_404
 from .filters import RecordFilter
 from .models import Category, Service
@@ -14,6 +14,7 @@ from rest_framework.pagination import PageNumberPagination
 from drf_yasg.utils import swagger_auto_schema
 from datetime import time, timedelta, datetime
 from django.contrib.auth.models import User
+
 
 
 
@@ -136,6 +137,14 @@ class CategoryDetailAPIView(APIView):
         }
 
         return Response(data)
+
+
+
+class ServiceListAPIView(APIView):
+    def get(self, request):
+        services = Service.objects.all()
+        serializer = ServiceListSerializer(services, many=True)
+        return Response(serializer.data)
 
 
 
