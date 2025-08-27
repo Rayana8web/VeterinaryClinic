@@ -158,3 +158,12 @@ REST_FRAMEWORK = {
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST_USER = "ronlime707@gmail.com"
+EMAIL_HOST_PASSWORD ="myfx hgsn ahti zbjj"
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
