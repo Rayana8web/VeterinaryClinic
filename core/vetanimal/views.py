@@ -91,6 +91,17 @@ class RecordListView(APIView):
         serializer = RecordListSerializer(records, many=True)
         return Response(serializer.data)
 
+class RecordDeleteView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def delete(self, request, pk):
+        try:
+            record = Record.objects.get(pk=pk)
+            record.delete()
+            return Response({"detail": "Запись удалена"}, status=204)
+        except Record.DoesNotExist:
+            return Response({"detail": "Запись не найдена"}, status=404)
+
 
 
 class ReviewCreateAPIView(APIView):
