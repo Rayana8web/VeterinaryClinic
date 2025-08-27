@@ -92,8 +92,8 @@ class RecordListView(APIView):
 
 
 
-class ReviewCreateAPIView (APIView):
-    permission_classes = [AllowAny]
+class ReviewCreateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         serializer = ReviewListSerializer(data=request.data)
