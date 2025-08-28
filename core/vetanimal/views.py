@@ -38,7 +38,6 @@ class IndexPageAPIView(APIView):
         # ------------------- 3. Пагинация -------------------
         paginator = RecordPagination()
         paginated_records = paginator.paginate_queryset(records, request)
-        # Сериализуем записи (RecordSerializer нужно настроить)
         records_data = RecordListSerializer(paginated_records, many=True).data
 
         # ------------------- 4. JSON  -------------------

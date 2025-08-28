@@ -10,9 +10,17 @@ import {
 } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
+import { AxiosError } from 'axios';
+
+interface FormData {
+    username: string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
+}
 
 export const RegisterForm: React.FC = () => {
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<FormData>({
         username: '',
         email: '',
         password: '',
@@ -39,9 +47,15 @@ export const RegisterForm: React.FC = () => {
         setIsLoading(true);
 
         try {
-            await register(formData.username, formData.email, formData.password, formData.passwordConfirm);
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Ошибка регистрации');
+            await register(
+                formData.username,
+                formData.email,
+                formData.password,
+                formData.passwordConfirm
+            );
+        } catch (err) {
+            const axiosError = err as AxiosError<{ message: string }>;
+            setError(axiosError.response?.data?.message || 'Ошибка регистрации');
         } finally {
             setIsLoading(false);
         }

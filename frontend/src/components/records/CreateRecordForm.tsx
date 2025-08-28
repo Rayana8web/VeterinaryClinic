@@ -42,11 +42,11 @@ export const CreateRecordForm: React.FC = () => {
         // Имитация запроса к API
         setTimeout(() => {
             try {
-                // Здесь будет реальный вызов API, когда бэкенд будет готов
                 console.log('Отправка данных на бэкенд:', formData);
                 setSuccess(true);
                 setFormData({ date: '', time: '', service: '', animal_type: '', doctor: '' });
-            } catch (err: any) {
+            } catch {
+                // Ошибка ловится без переменной
                 setError('Ошибка создания записи. Бэкенд еще не готов.');
             } finally {
                 setIsLoading(false);
