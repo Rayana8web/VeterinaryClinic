@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
-interface User {
+
+export interface User {
     id: number;
     email: string;
     username: string;
@@ -19,47 +20,36 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const useAuth = () => {
     const context = useContext(AuthContext);
-    if (context === undefined) {
-        throw new Error('useAuth must be used within an AuthProvider');
-    }
+    if (!context) throw new Error('useAuth must be used within an AuthProvider');
     return context;
 };
 
-interface AuthProviderProps {
+interface Props {
     children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider: React.FC<Props> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        const checkAuth = async () => {
-            const token = localStorage.getItem('authToken');
-            const userData = localStorage.getItem('userData');
-
-            if (token && userData) {
-                setUser(JSON.parse(userData));
-            }
-            setIsLoading(false);
-        };
-
-        checkAuth();
+        const token = localStorage.getItem('authToken');
+        const userData = localStorage.getItem('userData');
+        if (token && userData) setUser(JSON.parse(userData));
+        setIsLoading(false);
     }, []);
 
     const login = async (email: string, password: string) => {
-        // Заглушка - здесь будет реальный API вызов
-        console.log('Login attempt:', email, password); // Используем password чтобы убрать warning
-        const mockUser = { id: 1, email, username: 'user' };
+        console.log('Login:', email, password);
+        const mockUser: User = { id: 1, email, username: 'user' };
         localStorage.setItem('authToken', 'mock-token');
         localStorage.setItem('userData', JSON.stringify(mockUser));
         setUser(mockUser);
     };
 
     const register = async (username: string, email: string, password: string, passwordConfirm: string) => {
-        // Заглушка - здесь будет реальный API вызов
-        console.log('Register attempt:', username, email, password, passwordConfirm); // Используем переменные
-        const mockUser = { id: 1, email, username };
+        console.log('Register:', username, email, password, passwordConfirm);
+        const mockUser: User = { id: 1, email, username };
         localStorage.setItem('authToken', 'mock-token');
         localStorage.setItem('userData', JSON.stringify(mockUser));
         setUser(mockUser);
@@ -71,16 +61,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setUser(null);
     };
 
-    const value = {
-        user,
-        login,
-        register,
-        logout,
-        isLoading
-    };
-
     return (
-        <AuthContext.Provider value={value}>
+        <AuthContext.Provider value={{ user, login, register, logout, isLoading }}>
             {children}
         </AuthContext.Provider>
     );

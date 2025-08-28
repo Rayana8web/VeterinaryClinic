@@ -1,29 +1,45 @@
+// src/pages/HomePage.tsx
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-    Typography,
-    Box,
-    Grid,
-    Card,
-    CardContent,
-    Button,
-    IconButton
-} from '@mui/material';
-import { MedicalServices, People, ContactPhone, ArrowForward } from '@mui/icons-material';
+import { Typography, Box, Card, CardContent, IconButton } from '@mui/material';
+import { MedicalServices, People, ContactPhone, Category, ArrowForward } from '@mui/icons-material';
 
-export const HomePage: React.FC = () => {
+const HomePage: React.FC = () => {
     const navigate = useNavigate();
 
+    const cards = [
+        {
+            title: 'Услуги и цены',
+            description:
+                'Диагностика, лечение, вакцинация и профилактика заболеваний для ваших питомцев.',
+            icon: <MedicalServices sx={{ fontSize: 60, color: 'primary.main', mb: 3 }} />,
+            path: '/prices'
+        },
+        {
+            title: 'Наши врачи',
+            description: 'Опытные специалисты, которые любят животных и своё дело.',
+            icon: <People sx={{ fontSize: 60, color: 'primary.main', mb: 3 }} />,
+            path: '/doctors'
+        },
+        {
+            title: 'Контакты',
+            description: 'Найдите нас по адресу или свяжитесь по телефону/почте для записи.',
+            icon: <ContactPhone sx={{ fontSize: 60, color: 'primary.main', mb: 3 }} />,
+            path: '/contacts'
+        },
+        {
+            title: 'Категории животных',
+            description: 'Выберите категорию вашего питомца, чтобы узнать доступные услуги и врачей.',
+            icon: <Category sx={{ fontSize: 60, color: 'primary.main', mb: 3 }} />,
+            path: '/categories'
+        }
+    ];
+
     return (
-        <>
+        <Box sx={{ py: 8, px: { xs: 2, sm: 4, md: 6 } }}>
             {/* Hero section */}
             <Box textAlign="center" mb={8}>
-                <Typography
-                    variant="h2"
-                    component="h1"
-                    gutterBottom
-                    sx={{ fontWeight: 600 }}
-                >
+                <Typography variant="h2" component="h1" gutterBottom sx={{ fontWeight: 600 }}>
                     Добро пожаловать в ветеринарную клинику!
                 </Typography>
                 <Typography
@@ -31,54 +47,28 @@ export const HomePage: React.FC = () => {
                     component="p"
                     color="text.secondary"
                     mb={4}
-                    sx={{
-                        maxWidth: 800,
-                        mx: 'auto',
-                        lineHeight: 1.6
-                    }}
+                    sx={{ maxWidth: 800, mx: 'auto', lineHeight: 1.6 }}
                 >
-                    Мы заботимся о ваших питомцах. Узнайте больше об услугах, наших врачах и как с нами связаться.
+                    Мы заботимся о ваших питомцах. Узнайте больше об услугах, наших врачах, категориях животных и как с нами связаться.
                 </Typography>
-                <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="large"
-                        sx={{
-                            fontSize: '1.1rem',
-                            px: 4,
-                            py: 1.5,
-                            borderRadius: 2
-                        }}
-                    >
-                        Записаться на приём
-                    </Button>
-                    <Button
-                        variant="outlined"
-                        color="primary"
-                        size="large"
-                        onClick={() => navigate('/prices')}
-                        sx={{
-                            fontSize: '1.1rem',
-                            px: 4,
-                            py: 1.5,
-                            borderRadius: 2
-                        }}
-                    >
-                        Посмотреть цены
-                    </Button>
-                </Box>
             </Box>
 
             {/* Cards section */}
-            <Grid container spacing={4}>
-                {/* Карточка Услуги */}
-                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 4,
+                    justifyContent: 'center',
+                }}
+            >
+                {cards.map((card) => (
                     <Card
+                        key={card.title}
                         sx={{
+                            width: 300,
                             textAlign: 'center',
                             p: 3,
-                            height: '100%',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center',
@@ -90,129 +80,35 @@ export const HomePage: React.FC = () => {
                                 backgroundColor: 'action.hover'
                             }
                         }}
-                        onClick={() => navigate('/prices')}
+                        onClick={() => navigate(card.path)}
                     >
-                        <MedicalServices sx={{
-                            fontSize: 60,
-                            color: 'primary.main',
-                            mb: 3
-                        }} />
+                        {card.icon}
                         <CardContent sx={{ flexGrow: 1 }}>
                             <Typography variant="h5" gutterBottom fontWeight={600}>
-                                Услуги и цены
+                                {card.title}
                             </Typography>
                             <Typography variant="body1" color="text.secondary" paragraph>
-                                Диагностика, лечение, вакцинация и профилактика заболеваний для ваших питомцев.
+                                {card.description}
                             </Typography>
                             <IconButton
                                 color="primary"
                                 sx={{ mt: 1 }}
                                 onClick={(e) => {
                                     e.stopPropagation();
-                                    navigate('/prices');
+                                    navigate(card.path);
                                 }}
                             >
                                 <ArrowForward />
                             </IconButton>
                         </CardContent>
                     </Card>
-                </Grid>
-
-                {/* Карточка Врачи */}
-                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                    <Card
-                        sx={{
-                            textAlign: 'center',
-                            p: 3,
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            transition: 'transform 0.2s, box-shadow 0.2s',
-                            cursor: 'pointer',
-                            '&:hover': {
-                                transform: 'translateY(-4px)',
-                                boxShadow: 6,
-                                backgroundColor: 'action.hover'
-                            }
-                        }}
-                        onClick={() => navigate('/doctors')}
-                    >
-                        <People sx={{
-                            fontSize: 60,
-                            color: 'primary.main',
-                            mb: 3
-                        }} />
-                        <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography variant="h5" gutterBottom fontWeight={600}>
-                                Наши врачи
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary" paragraph>
-                                Опытные специалисты, которые любят животных и своё дело.
-                            </Typography>
-                            <IconButton
-                                color="primary"
-                                sx={{ mt: 1 }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate('/doctors');
-                                }}
-                            >
-                                <ArrowForward />
-                            </IconButton>
-                        </CardContent>
-                    </Card>
-                </Grid>
-
-                {/* Карточка Контакты */}
-                <Grid size={{ xs: 12, sm: 6, md: 4 }}>
-                    <Card
-                        sx={{
-                            textAlign: 'center',
-                            p: 3,
-                            height: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            transition: 'transform 0.2s, box-shadow 0.2s',
-                            cursor: 'pointer',
-                            '&:hover': {
-                                transform: 'translateY(-4px)',
-                                boxShadow: 6,
-                                backgroundColor: 'action.hover'
-                            }
-                        }}
-                        onClick={() => navigate('/contacts')}
-                    >
-                        <ContactPhone sx={{
-                            fontSize: 60,
-                            color: 'primary.main',
-                            mb: 3
-                        }} />
-                        <CardContent sx={{ flexGrow: 1 }}>
-                            <Typography variant="h5" gutterBottom fontWeight={600}>
-                                Контакты
-                            </Typography>
-                            <Typography variant="body1" color="text.secondary" paragraph>
-                                Найдите нас по адресу или свяжитесь по телефону/почте для записи.
-                            </Typography>
-                            <IconButton
-                                color="primary"
-                                sx={{ mt: 1 }}
-                                onClick={(e) => {
-                                    e.stopPropagation();
-                                    navigate('/contacts');
-                                }}
-                            >
-                                <ArrowForward />
-                            </IconButton>
-                        </CardContent>
-                    </Card>
-                </Grid>
-            </Grid>
+                ))}
+            </Box>
 
             {/* Отступ снизу */}
             <Box sx={{ py: 4 }} />
-        </>
+        </Box>
     );
 };
+
+export default HomePage;

@@ -8,6 +8,7 @@ import {
     CircularProgress
 } from '@mui/material';
 import { useAuth } from '../../contexts/AuthContext';
+import { AxiosError } from 'axios';
 
 export const LoginForm: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -24,8 +25,9 @@ export const LoginForm: React.FC = () => {
 
         try {
             await login(email, password);
-        } catch (err: any) {
-            setError(err.response?.data?.message || 'Ошибка входа');
+        } catch (err) {
+            const axiosError = err as AxiosError<{ message: string }>;
+            setError(axiosError.response?.data?.message || 'Ошибка входа');
         } finally {
             setIsLoading(false);
         }

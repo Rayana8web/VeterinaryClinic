@@ -1,7 +1,7 @@
+// src/api/apiClient.ts
 import axios from 'axios';
 
-// Базовый URL от бэкенда - БЕЗ /api в конце!
-const API_BASE_URL = 'https://web08hg.pythonanywhere.com';
+const API_BASE_URL = 'https://adminweb08.pythonanywhere.com';
 
 export const apiClient = axios.create({
     baseURL: API_BASE_URL,
@@ -10,7 +10,6 @@ export const apiClient = axios.create({
     },
 });
 
-// Перехватчик для добавления токена
 apiClient.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('authToken');
@@ -19,12 +18,9 @@ apiClient.interceptors.request.use(
         }
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
-// Перехватчик для обработки ошибок
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
