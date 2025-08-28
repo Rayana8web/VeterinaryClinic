@@ -5,13 +5,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="787b0b2c-cbb5-48a6-a23b-dbce3099fd35" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/user/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vetanimal/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/vetanimal/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vetanimal/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/vetanimal/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vetanimal/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/vetanimal/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vetanimal/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/vetanimal/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/vetanimal/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/vetanimal/views.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/CategoriesPage.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/types/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/core/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/apiClient.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/apiClient.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/authApi.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/authApi.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/categoriesAPI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/categoriesAPI.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/api/recordsAPI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/api/recordsAPI.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/LoginForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/LoginForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/auth/RegisterForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/auth/RegisterForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/records/CreateRecordForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/records/CreateRecordForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/records/RecordsList.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/records/RecordsList.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/contexts/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/ContactsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/ContactsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/CreateRecordPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/CreateRecordPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/DoctorsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/DoctorsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/HomePage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/HomePage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/LoginPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/LoginPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/MyRecordsPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/MyRecordsPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/PricesPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/PricesPage.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/RegisterPage.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/RegisterPage.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,21 +44,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "temirlan-frontend-branch",
+    "last_opened_file_path": "C:/Users/user/Desktop/VeterinaryClinic",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "ts.external.directory.path": "C:\\Users\\user\\Desktop\\VeterinaryClinic\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-dfff61a61320-9cdd278e9d02-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.25410.159" />
+        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-WS-243.23654.157" />
       </set>
     </attachedChunks>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="787b0b2c-cbb5-48a6-a23b-dbce3099fd35" name="Changes" comment="" />
@@ -51,7 +75,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1755775794662</updated>
+      <workItem from="1756409294910" duration="4050000" />
     </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>

@@ -1,9 +1,10 @@
+// src/api/recordsAPI.ts
 import { apiClient } from './apiClient';
 
 export interface Record {
     id: number;
-    date: string;
-    time: string;
+    date: string;        // YYYY-MM-DD
+    time: string;        // HH:MM
     service: string;
     animal_type: string;
     doctor: string;
@@ -19,20 +20,20 @@ export interface CreateRecordData {
 }
 
 export const recordsAPI = {
-    // Создать запись
+    // Создать новую запись
     createRecord: async (recordData: CreateRecordData): Promise<Record> => {
         const response = await apiClient.post('/api/record/', recordData);
         return response.data;
     },
 
-    // Получить все записи пользователя
+    // Получить все записи текущего пользователя
     getMyRecords: async (): Promise<Record[]> => {
-        const response = await apiClient.get('/api/records/');
+        const response = await apiClient.get('/api/my-records/');
         return response.data;
     },
 
-    // Отменить запись
+    // Отменить запись по ID
     cancelRecord: async (recordId: number): Promise<void> => {
-        await apiClient.delete(`/api/records/${recordId}/`);
+        await apiClient.delete(`/api/record/${recordId}/`);
     }
 };
