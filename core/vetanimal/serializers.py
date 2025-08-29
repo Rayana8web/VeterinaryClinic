@@ -62,7 +62,7 @@ class RecordListSerializer(serializers.ModelSerializer):
         if Record.objects.filter(doctor=doctor, date=date, time=time).exists():
             raise serializers.ValidationError("В это время доктор уже занят. Выберите другое время.")
 
-        # Проверка интервала с 8:00 до 18:00
+        # Проверка интервала с
         if not (8 <= time.hour < 18):
             raise serializers.ValidationError("Запись возможна только с 08:00 до 18:00.")
 

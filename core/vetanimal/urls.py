@@ -16,8 +16,8 @@ urlpatterns = [
 
 
     # отзыв
-    path("reviews/", ReviewPageAPIView.as_view()),  # просмотр всех отзывов
-    path("reviews/create/", ReviewCreateAPIView.as_view()),  # оставить отзыв
+    path("reviews/", ReviewPageAPIView.as_view()),
+    path("reviews/create/", ReviewCreateAPIView.as_view()),
 
 
 

@@ -44,12 +44,12 @@ INSTALLED_APPS = [
     'user',
     'rest_framework',
     'django_filters',
-    'corsheaders',  # обязательно для CORS
+    'corsheaders',
 ]
 
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # добавляем CORS middleware в начало
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -61,7 +61,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'core.urls'
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent  # <-- теперь это корень VeterinaryСlinic
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "frontend_dist")]
 
@@ -123,11 +123,11 @@ AUTH_USER_MODEL = 'user.MyUser'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',  # только сессии
+        'rest_framework.authentication.SessionAuthentication',
     ],
 }
 
-CORS_ALLOW_ALL_ORIGINS = True  # для локальной разработки
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOWED_ORIGINS = [
     "https://web08hg.pythonanywhere.com",
